@@ -15,6 +15,13 @@ use quickwx\tool\ErrorCode;
 trait OpenApi
 {
 
+    /**
+     * @param $replyMsg
+     * @param $timeStamp
+     * @param $nonce
+     * @param $encryptMsg
+     * @return int|mixed
+     */
     public function encryptMsg($replyMsg, $timeStamp, $nonce, &$encryptMsg)
     {
         $pc = new Prpcrypt($this->encodingAesKey);
@@ -46,14 +53,16 @@ trait OpenApi
         return ErrorCode::$OK;
     }
 
+
     /**
      * @param $msgSignature
-     * @param null $timestamp
+     * @param $timestamp
      * @param $nonce
      * @param $postData
      * @param $msg
+     * @return int|mixed
      */
-    public function decryptMsg($msgSignature, $timestamp = null, $nonce, $postData, &$msg)
+    public function decryptMsg($msgSignature, $timestamp , $nonce, $postData, &$msg)
     {
         if (strlen($this->encodingAesKey) != 43) {
             return ErrorCode::$IllegalAesKey;
