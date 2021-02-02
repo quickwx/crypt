@@ -19,7 +19,7 @@ class WxTool
 
     private $appId;
 
-    public function __construct($appId,$token, $encodingAesKey)
+    public function __construct($appId,$token,$encodingAesKey)
     {
         $this->token = $token;
         $this->encodingAesKey = $encodingAesKey;
