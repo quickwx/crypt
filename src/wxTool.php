@@ -9,6 +9,21 @@ namespace quickwx;
 
 class wxTool
 {
+
+    private $token;
+
+    private $encodingAesKey;
+
+    private $appId;
+
+    public function __construct($token, $encodingAesKey, $appId)
+    {
+        $this->token = $token;
+        $this->encodingAesKey = $encodingAesKey;
+        $this->appId = $appId;
+    }
+
+
     public function decryptMsg ($msgSignature, $timestamp = null, $nonce, $postData, &$msg)
     {
         $msg = 1;

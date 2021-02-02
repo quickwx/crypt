@@ -8,5 +8,10 @@
             "email": "369968620@qq.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "quickwx\\": "src/"
+        }
+    }
 }
