@@ -2,13 +2,15 @@
 /**
  * Created by Crypt
  * @Desc
- * @Author liulei email liulei@369968620.com
+ * @Author liulei email 369968620@qq.com
  * Date 2021/2/2 10:56 上午
  */
 namespace quickwx;
+use quickwx\sdk\OpenApi;
 
-class wxTool
+class WxTool
 {
+    use OpenApi;
 
     private $token;
 
@@ -21,12 +23,5 @@ class wxTool
         $this->token = $token;
         $this->encodingAesKey = $encodingAesKey;
         $this->appId = $appId;
-    }
-
-
-    public function decryptMsg ($msgSignature, $timestamp = null, $nonce, $postData, &$msg)
-    {
-        $msg = 1;
-        return $msg;
     }
 }
