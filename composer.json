@@ -1,0 +1,12 @@
+{
+    "name": "quickwx/crypt",
+    "description": "wechat open platform Third party Platforms API SDK",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "刘磊",
+            "email": "369968620@qq.com"
+        }
+    ],
+    "require": {}
+}
