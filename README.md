@@ -5,7 +5,7 @@ $appid = '';
 $token = '';
 $aeskey = '';
 
-$wx = new wxTool($token,$aeskey,$appid);
+$wx = new wxTool($appid,$token,$aeskey);
 
 
 // 微信开放平台推送到第三方平台的消息
