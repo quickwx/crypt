@@ -6,6 +6,7 @@
  * Date 2021/2/2 10:56 上午
  */
 namespace quickwx;
+
 use quickwx\sdk\OpenApi;
 
 class WxTool
