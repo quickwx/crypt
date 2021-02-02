@@ -17,8 +17,8 @@ $postData = '';
 
 
 // 解密消息
-$dec = $wx->decryptMsg($msgSignature,$timestamp,$nonce,$postData,$plaintext);
+$dec = $wx->decryptMsg($msgSignature,$timestamp,$nonce,$postData,$msg);
 if($dec == 0){
-    echo $plaintext;
+    echo $msg;
 }
 ```
