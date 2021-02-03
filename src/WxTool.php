@@ -13,16 +13,18 @@ class WxTool
 {
     use OpenApi;
 
-    private $token;
+    private $component_appid;
 
     private $encodingAesKey;
 
     private $appId;
 
-    public function __construct($appId,$token,$encodingAesKey)
+    public function __construct($component_appid,$token,$encodingAesKey)
     {
-        $this->token = $token;
+        $this->component_appid = $component_appid;
+
         $this->encodingAesKey = $encodingAesKey;
-        $this->appId = $appId;
+
+        $this->component_appid = $component_appid;
     }
 }
