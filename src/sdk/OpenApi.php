@@ -83,7 +83,6 @@ trait OpenApi
         }
 
         $encrypt = $array[1];
-        $touser_name = $array[2];
 
         //验证安全签名
         $sha1 = new SHA1;
