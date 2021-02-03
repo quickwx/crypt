@@ -18,12 +18,28 @@ class XMLParse
     {
         try {
 
+            $user_errors = libxml_use_internal_errors();
+
+            if(!$user_errors){
+                libxml_use_internal_errors(true);
+            }
+
             $xml = simplexml_load_string($xmltext,'SimpleXMLElement',LIBXML_NOCDATA);
 
-            $data = json_decode(json_encode($xml),true);
+            if ($xml === false) {
 
-            return array(0, $data['Encrypt']);
+                if(!$user_errors){
+                    libxml_use_internal_errors(false);
+                }
 
+                return array(ErrorCode::$ParseXmlError, null, null);
+
+            }else{
+
+                $data = json_decode(json_encode($xml),true);
+
+                return array(0, $data['Encrypt']);
+            }
         } catch (Exception $e) {
             //print $e . "\n";
             return array(ErrorCode::$ParseXmlError, null, null);
