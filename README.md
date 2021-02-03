@@ -1,11 +1,11 @@
 ```php
 use quickwx\wxTool;
 
-$appid = '';
-$token = '';
-$aeskey = '';
+$component_appid = ''; //第三方平台app_id
+$token = ''; //消息校验Token
+$aeskey = ''; //消息加解密Key
 
-$wx = new wxTool($appid,$token,$aeskey);
+$wx = new wxTool($component_appid,$token,$aeskey);
 
 
 // 微信开放平台推送到第三方平台的消息
@@ -13,11 +13,11 @@ $wx = new wxTool($appid,$token,$aeskey);
 $msgSignature = '';
 $timestamp = '';
 $nonce = '';
-$postData = '';
+$postXml = '';
 
 
 // 解密消息
-$dec = $wx->decryptMsg($msgSignature,$timestamp,$nonce,$postData,$msg);
+$dec = $wx->decryptMsg($msgSignature,$timestamp,$nonce,$postXml,$msg);
 if($dec == 0){
     echo $msg;
 }
