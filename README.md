@@ -2,10 +2,11 @@
 use quickwx\wxTool;
 
 $component_appid = ''; //第三方平台app_id
+$component_secret = ''; //第三方平台的APPSECRET
 $token = ''; //消息校验Token
-$aeskey = ''; //消息加解密Key
+$encodingAesKey = ''; //消息加解密Key
 
-$wx = new wxTool($component_appid,$token,$aeskey);
+$wx = new wxTool($component_appid,$component_secret,$token,$encodingAesKey);
 
 
 // 微信开放平台推送到第三方平台的消息
