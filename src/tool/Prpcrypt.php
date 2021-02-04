@@ -14,11 +14,13 @@ class Prpcrypt
 		$this->key = base64_decode($k . "=");
 	}
 
-	/**
-	 * 对明文进行加密
-	 * @param string $text 需要加密的明文
-	 * @return string 加密后的密文
-	 */
+
+    /**
+     * 对明文进行加密
+     * @param $text
+     * @param $appid
+     * @return array ['解密状态','加密后的密文']
+     */
 	public function encrypt($text, $appid)
 	{
 
@@ -48,27 +50,17 @@ class Prpcrypt
 		}
 	}
 
-	/**
-	 * 对密文进行解密
-	 * @param string $encrypted 需要解密的密文
-	 * @return string 解密得到的明文
-	 */
+    /**
+     * 对密文进行解密
+     * @param $encrypted 需要解密的密文
+     * @param $appid  对应的appid
+     * @return array 解密得到的明文
+     */
 	public function decrypt($encrypted, $appid)
 	{
 		try {
 			//使用BASE64对需要解密的字符串进行解码
-//			$ciphertext_dec = base64_decode($encrypted);
             $iv = substr($this->key, 0, 16);
-
-//			$module = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
-//			mcrypt_generic_init($module, $this->key, $iv);
-//
-//			//解密
-//			$decrypted = mdecrypt_generic($module, $ciphertext_dec);
-//			mcrypt_generic_deinit($module);
-//			mcrypt_module_close($module);
-
-//            $decrypted = openssl_decrypt($ciphertext_dec, 'aes-256-cbc', $this->key, OPENSSL_RAW_DATA, $iv);
             $decrypted = openssl_decrypt($encrypted, 'AES-256-CBC', substr($this->key, 0, 32), OPENSSL_ZERO_PADDING, $iv);
 		} catch (Exception $e) {
 			return array(ErrorCode::$DecryptAESError, null);
@@ -79,7 +71,7 @@ class Prpcrypt
 			$result = $pkc_encoder->decode($decrypted);
 			//去除16位随机字符串,网络字节序和AppId
 			if (strlen($result) < 16)
-				return "";
+                return array(ErrorCode::$DecryptAESError, null);
 			$content = substr($result, 16, strlen($result));
 			$len_list = unpack("N", substr($content, 0, 4));
 			$xml_len = $len_list[1];
