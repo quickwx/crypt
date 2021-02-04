@@ -29,7 +29,7 @@ trait OpenApi
         $pc = new Prpcrypt($this->encodingAesKey);
 
         //加密
-        $array = $pc->encrypt($replyMsg, $this->appId);
+        $array = $pc->encrypt($replyMsg, $this->component_appid);
         $ret = $array[0];
         if ($ret != 0) {
             return $ret;
@@ -99,7 +99,7 @@ trait OpenApi
         if ($signature != $msgSignature) {
             return ErrorCode::$ValidateSignatureError;
         }
-        $result = $pc->decrypt($encrypt, $this->appId);
+        $result = $pc->decrypt($encrypt, $this->component_appid);
 
         if ($result[0] != 0) {
             return $result[0];
