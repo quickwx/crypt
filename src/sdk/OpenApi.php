@@ -111,7 +111,7 @@ trait OpenApi
 
 
     /**
-     * 获取最新的ticket
+     * 启动ticket推送
      */
     public function start_push_ticket()
     {
