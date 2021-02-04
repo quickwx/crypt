@@ -141,7 +141,7 @@ trait OpenApi
         $response =  $this->client->request('POST',$url,[
             'json'=>[
                 'component_appid'=>$this->component_appid,
-                'component_secret'=>$this->component_secret,
+                'component_appsecret'=>$this->component_secret,
                 'component_verify_ticket'=>$component_verify_ticket
             ]
         ]);
