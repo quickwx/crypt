@@ -117,11 +117,17 @@ trait OpenApi
     {
 
         $url = 'https://api.weixin.qq.com/cgi-bin/component/api_start_push_ticket';
+        $post_data =  [
+            'component_appid'=>$this->component_appid,
+            'component_secret'=>$this->component_secret
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
 
         $response =  $this->client->request('POST',$url,[
-            'json'=>[
-                'component_appid'=>$this->component_appid,
-                'component_secret'=>$this->component_secret
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
             ]
         ]);
 
@@ -137,12 +143,18 @@ trait OpenApi
     public function component_token($component_verify_ticket)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
+        $post_data =  [
+            'component_appid'=>$this->component_appid,
+            'component_appsecret'=>$this->component_secret,
+            'component_verify_ticket'=>$component_verify_ticket
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
 
         $response =  $this->client->request('POST',$url,[
-            'json'=>[
-                'component_appid'=>$this->component_appid,
-                'component_appsecret'=>$this->component_secret,
-                'component_verify_ticket'=>$component_verify_ticket
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
             ]
         ]);
         return (string)$response->getBody();
@@ -155,10 +167,16 @@ trait OpenApi
     public function create_preauthcode($component_access_token)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode';
+        $post_data =  [
+            'component_appid'=>$this->component_appid,
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
 
         $response =  $this->client->request('POST',$url,[
-            'json'=>[
-                'component_appid'=>$this->component_appid,
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
             ],
             'query'=>['component_access_token'=>$component_access_token]
         ]);
@@ -174,11 +192,17 @@ trait OpenApi
     public function query_auth($component_access_token,$authorization_code)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/component/api_query_auth';
+        $post_data =  [
+            'component_appid'=>$this->component_appid,
+            'authorization_code'=>$authorization_code
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
 
         $response =  $this->client->request('POST',$url,[
-            'json'=>[
-                'component_appid'=>$this->component_appid,
-                'authorization_code'=>$authorization_code
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
             ],
             'query'=>['component_access_token'=>$component_access_token]
         ]);
@@ -195,13 +219,18 @@ trait OpenApi
     public function authorizer_token($component_access_token,$authorizer_appid,$authorizer_refresh_token)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token';
+        $post_data =  [
+            'component_appid'=>$this->component_appid,
+            'authorizer_appid'=>$authorizer_appid,
+            'authorizer_refresh_token'=>$authorizer_refresh_token
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
 
         $response =  $this->client->request('POST',$url,[
-            'json'=>[
-                'component_appid'=>$this->component_appid,
-                'authorizer_appid'=>$authorizer_appid,
-                'authorizer_refresh_token'=>$authorizer_refresh_token
-
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
             ],
             'query'=>['component_access_token'=>$component_access_token]
         ]);
@@ -216,11 +245,16 @@ trait OpenApi
     public function get_authorizer_info($component_access_token,$authorizer_appid)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info';
-
+        $post_data =  [
+            'component_appid'=>$this->component_appid,
+            'authorizer_appid'=>$authorizer_appid
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
         $response =  $this->client->request('POST',$url,[
-            'json'=>[
-                'component_appid'=>$this->component_appid,
-                'authorizer_appid'=>$authorizer_appid
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
             ],
             'query'=>['component_access_token'=>$component_access_token]
         ]);
@@ -238,12 +272,17 @@ trait OpenApi
     public function get_authorizer_option($component_access_token,$authorizer_appid,$option_name)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info';
-
+        $post_data =  [
+            'component_appid'=>$this->component_appid,
+            'authorizer_appid'=>$authorizer_appid,
+            'option_name'=>$option_name
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
         $response =  $this->client->request('POST',$url,[
-            'json'=>[
-                'component_appid'=>$this->component_appid,
-                'authorizer_appid'=>$authorizer_appid,
-                'option_name'=>$option_name
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
             ],
             'query'=>['component_access_token'=>$component_access_token]
         ]);
@@ -262,12 +301,19 @@ trait OpenApi
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/component/api_set_authorizer_option';
 
+        $post_data =  [
+            'component_appid'=>$this->component_appid,
+            'authorizer_appid'=>$authorizer_appid,
+            'option_name'=>$option_name,
+            'option_value'=>$option_value
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
+
         $response =  $this->client->request('POST',$url,[
-            'json'=>[
-                'component_appid'=>$this->component_appid,
-                'authorizer_appid'=>$authorizer_appid,
-                'option_name'=>$option_name,
-                'option_value'=>$option_value
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
             ],
             'query'=>['component_access_token'=>$component_access_token]
         ]);
@@ -282,18 +328,25 @@ trait OpenApi
      * @param int $offset 偏移位置/起始位置
      * @param int $count 拉取数量，最大为 500
      */
-    public function get_authorizer_list($component_access_token,$component_appid,$offset = 0,$count = 500)
+    public function get_authorizer_list($component_access_token,$offset = 0,$count = 500)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_list';
+        $post_data =  [
+            'component_appid'=>$this->component_appid,
+            'offset'=>$offset,
+            'count'=>$count
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
 
         $response =  $this->client->request('POST',$url,[
-            'json'=>[
-                'component_appid'=>$this->component_appid,
-                'authorizer_appid'=>$authorizer_appid,
-                'offset'=>$offset,
-                'count'=>$count
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
             ],
-            'query'=>['component_access_token'=>$component_access_token]
+            'query'=>[
+                'component_access_token'=>$component_access_token,
+            ]
         ]);
         return (string)$response->getBody();
     }
@@ -310,21 +363,55 @@ trait OpenApi
      */
     public function fastregisterweapp($component_access_token,$name,$code,$code_type,$legal_persona_wechat,$legal_persona_name,$component_phone)
     {
-        $url = 'https://api.weixin.qq.com/cgi-bin/component/fastregisterweapp?action=create';
+        $url = 'https://api.weixin.qq.com/cgi-bin/component/fastregisterweapp';
+        $post_data =  [
+            'name'=>$name,
+            'code'=>$code,
+            'code_type'=>$code_type,
+            'legal_persona_wechat'=>$legal_persona_wechat,
+            'legal_persona_name'=>$legal_persona_name,
+            'component_phone'=>$component_phone
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
 
         $response =  $this->client->request('POST',$url,[
-            'json'=>[
-                'name'=>$name,
-                'code'=>$code,
-                'code_type'=>$code_type,
-                'legal_persona_wechat'=>$legal_persona_wechat,
-                'legal_persona_name'=>$legal_persona_name,
-                'component_phone'=>$component_phone
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
             ],
-            'query'=>['component_access_token'=>$component_access_token]
+            'query'=>[
+                'component_access_token'=>$component_access_token,
+                'action'=>'create'
+            ]
         ]);
         return (string)$response->getBody();
     }
 
 
+    /**
+     * 创建试用小程序
+     * @param $component_access_token
+     * @param $name
+     * @param $openid
+     * @return string
+     */
+    public function fastregisterbetaweapp($component_access_token,$name,$openid){
+        $url = 'https://api.weixin.qq.com/wxa/component/fastregisterbetaweapp';
+        $post_data =  [
+            'name'=>$name,
+            'openid'=>$openid
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
+
+        $response =  $this->client->request('POST',$url,[
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length' => strlen($post_str),
+            ],
+            'query'=>['access_token'=>$component_access_token]
+        ]);
+        return (string)$response->getBody();
+    }
 }
