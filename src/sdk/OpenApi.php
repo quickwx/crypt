@@ -388,6 +388,33 @@ trait OpenApi
         return (string)$response->getBody();
     }
 
+    /**
+     * 查询创建小程序任务状态
+     */
+    public function fastregisterweapp_status($component_access_token,$name,$legal_persona_wechat,$legal_persona_name)
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/component/fastregisterweapp';
+        $post_data =  [
+            'name'=>$name,
+            'legal_persona_wechat'=>$legal_persona_wechat,
+            'legal_persona_name'=>$legal_persona_name,
+        ];
+        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
+
+        $response =  $this->client->request('POST',$url,[
+            'body'=>$post_str,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Content-Length'     => strlen($post_str),
+            ],
+            'query'=>[
+                'component_access_token'=>$component_access_token,
+                'action'=>'search'
+            ]
+        ]);
+        return (string)$response->getBody();
+    }
+
 
     /**
      * 创建试用小程序
