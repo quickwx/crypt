@@ -12,6 +12,7 @@ use quickwx\tool\SHA1;
 use quickwx\tool\XMLParse;
 use quickwx\tool\ErrorCode;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 
 trait OpenApi
 {
@@ -216,25 +217,48 @@ trait OpenApi
      * @param $authorizer_appid  授权方 appid
      * @param $authorizer_refresh_token  	刷新令牌，获取授权信息时得到
      */
-    public function authorizer_token($component_access_token,$authorizer_appid,$authorizer_refresh_token)
+    public function get_authorizer_token($component_access_token,$authorizer_appid,$authorizer_refresh_token)
     {
-        $url = 'https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token';
-        $post_data =  [
-            'component_appid'=>$this->component_appid,
-            'authorizer_appid'=>$authorizer_appid,
-            'authorizer_refresh_token'=>$authorizer_refresh_token
-        ];
-        $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
 
-        $response =  $this->client->request('POST',$url,[
-            'body'=>$post_str,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Content-Length'     => strlen($post_str),
-            ],
-            'query'=>['component_access_token'=>$component_access_token]
+        $promises = [];
+
+        $requests = function ($component_access_token,$authorizer_appid,$authorizer_refresh_token)  {
+
+            $url = 'https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token';
+
+            foreach ($authorizer_appid as $k => $v){
+                $post_data =  [
+                    'component_appid'=>$this->component_appid,
+                    'authorizer_appid'=>$v,
+                    'authorizer_refresh_token'=>$authorizer_refresh_token[$k]
+                ];
+                yield new Request('POST', $url,[
+                    'json' => $post_data,
+                    'query' => ['component_access_token'=>$component_access_token]
+                ]);
+            }
+        };
+
+
+        $ret = [];
+
+        $pool = new Pool($this->client, $requests($component_access_token,$authorizer_appid,$authorizer_refresh_token), [
+            'concurrency' => 500,
+            'fulfilled' => function ($response, $index) use ($authorizer_appid) {
+                // this is delivered each successful response
+                $ret[$authorizer_appid[$index]] = $response->getBody();
+            },
+            'rejected' => function ($reason, $index) {
+                // this is delivered each failed request
+            },
         ]);
-        return (string)$response->getBody();
+
+        $promise = $pool->promise();
+
+        $promise->wait();
+
+        return $ret;
+
     }
 
     /**
@@ -441,4 +465,6 @@ trait OpenApi
         ]);
         return (string)$response->getBody();
     }
+
+
 }
