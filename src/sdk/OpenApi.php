@@ -214,18 +214,20 @@ trait OpenApi
 
     /**
      * 获取/刷新接口调用令牌
-     * @param $component_access_token  第三方平台component_access_token
-     * @param $authorizer_appid  授权方 appid
-     * @param $authorizer_refresh_token  	刷新令牌，获取授权信息时得到
+     * @param $component_access_token
+     * @param array $authorizer_appid
+     * @param array $authorizer_refresh_token
+     * @return array
      */
-    public function get_authorizer_token($component_access_token,$authorizer_appid,$authorizer_refresh_token)
+
+    public function get_authorizer_token($component_access_token,$authorizer_appid = [],$authorizer_refresh_token = [])
     {
 
         $promises = [];
 
         $requests = function ($component_access_token,$authorizer_appid,$authorizer_refresh_token)  {
 
-            $url = 'https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token';
+            $url = 'https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token?component_access_token='.$component_access_token;
 
             foreach ($authorizer_appid as $k => $v){
                 $post_data =  [
@@ -233,24 +235,26 @@ trait OpenApi
                     'authorizer_appid'=>$v,
                     'authorizer_refresh_token'=>$authorizer_refresh_token[$k]
                 ];
-                yield new Request('POST', $url,[
-                    'json' => $post_data,
-                    'query' => ['component_access_token'=>$component_access_token]
-                ]);
+                $post_str = json_encode($post_data,JSON_UNESCAPED_UNICODE);
+
+                $headers = [
+                    'Content-Type' => 'application/json',
+                    'Content-Length'     => strlen($post_str),
+                ];
+
+                yield new Request('POST', $url,$headers,$post_str);
             }
         };
 
-
-        $ret = [];
-
+        $responses = [];
         $pool = new Pool($this->client, $requests($component_access_token,$authorizer_appid,$authorizer_refresh_token), [
             'concurrency' => 500,
             'fulfilled' => function ($response, $index) use ($authorizer_appid) {
-                // this is delivered each successful response
-                $ret[$authorizer_appid[$index]] = $response->getBody();
+                $responses[$authorizer_appid[$index]] = (string)$response->getBody();
             },
             'rejected' => function ($reason, $index) {
-                // this is delivered each failed request
+                $responses[$authorizer_appid[$index]] = null;
+
             },
         ]);
 
@@ -258,7 +262,7 @@ trait OpenApi
 
         $promise->wait();
 
-        return $ret;
+        return $responses;
 
     }
 
