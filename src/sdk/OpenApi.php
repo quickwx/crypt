@@ -247,16 +247,17 @@ trait OpenApi
         };
 
         $responses = [];
+
         $pool = new Pool($this->client, $requests($component_access_token,$authorizer_appid,$authorizer_refresh_token), [
             'concurrency' => 500,
-            'fulfilled' => function ($response, $index) use ($authorizer_appid) {
+            'fulfilled' => function ($response, $index) use ($authorizer_appid,$responses) {
                 $responses[$authorizer_appid[$index]] = (string)$response->getBody();
             },
-            'rejected' => function ($reason, $index) {
+            'rejected' => function ($reason, $index) use ($authorizer_appid,$responses) {
                 $responses[$authorizer_appid[$index]] = null;
-
             },
         ]);
+
 
         $promise = $pool->promise();
 
