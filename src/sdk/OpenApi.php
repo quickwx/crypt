@@ -13,6 +13,7 @@ use quickwx\tool\XMLParse;
 use quickwx\tool\ErrorCode;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Pool;
 
 trait OpenApi
 {
